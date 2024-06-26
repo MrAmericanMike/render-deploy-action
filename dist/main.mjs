@@ -26115,6 +26115,7 @@ async function runDeploy() {
   }
   CORE.info(`Deploy ${DATA.status} - Commit: ${DATA.commit.message}`);
   if (WAIT_FOR_SUCCESS === "true" || WAIT_FOR_SUCCESS === "1" || WAIT_FOR_SUCCESS === true) {
+    CORE.info(`Waiting for success`);
     await waitForSuccess(DATA);
   }
 }
