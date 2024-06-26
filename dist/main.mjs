@@ -26058,7 +26058,7 @@ const CORE = /*@__PURE__*/getDefaultExportFromCjs(coreExports);
 
 const RENDER_SERVICE_ID = CORE.getInput("render-service-id") || process.env.RENDER_SERVICE_ID;
 const RENDER_API_KEY = CORE.getInput("render-api-key") || process.env.RENDER_API_KEY;
-const WAIT_FOR_SUCCESS = CORE.getInput("wait-for-success") || process.env.WAIT_FOR_SUCCESS || true;
+const WAIT_FOR_SUCCESS = CORE.getInput("wait-for-success") || process.env.WAIT_FOR_SUCCESS || false;
 let ERROR = false;
 if (RENDER_SERVICE_ID === void 0) {
   CORE.setFailed("'render-service-id' is not defined");

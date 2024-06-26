@@ -3,7 +3,7 @@ import { DeployStatusData } from "./types";
 
 const RENDER_SERVICE_ID = CORE.getInput("render-service-id") || process.env.RENDER_SERVICE_ID;
 const RENDER_API_KEY = CORE.getInput("render-api-key") || process.env.RENDER_API_KEY;
-const WAIT_FOR_SUCCESS = CORE.getInput("wait-for-success") || process.env.WAIT_FOR_SUCCESS || true;
+const WAIT_FOR_SUCCESS = CORE.getInput("wait-for-success") || process.env.WAIT_FOR_SUCCESS || false;
 
 let ERROR = false;
 
