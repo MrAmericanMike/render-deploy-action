@@ -1,5 +1,7 @@
-name: "Deploy to Render"
+name: "Render Deploy"
 description: "Triggers a Render service deploy"
+icon: arrow-up-circle
+color: purple
 inputs:
     render-service-id:
         description: "ID of the service to deploy"
