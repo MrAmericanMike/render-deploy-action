@@ -62,7 +62,7 @@ async function runDeploy() {
 		headers: { Authorization: `Bearer ${RENDER_API_KEY}` }
 	});
 
-	if (RESPONSE.status === 200) {
+	if (RESPONSE.status === 200 || RESPONSE.ok) {
 		const DATA = await RESPONSE.json();
 		CORE.info(`Deploy ${DATA.status} - Commit: ${DATA.commit.message}`);
 		if (WAIT_FOR_SUCCESS === "true" || WAIT_FOR_SUCCESS === "1") {
