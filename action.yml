@@ -1,0 +1,15 @@
+name: "Deploy to Render"
+description: "Triggers a Render service deploy"
+inputs:
+    render-service-id:
+        description: "ID of the service to deploy"
+        required: true
+    render-api-key:
+        description: "A Render API key"
+        required: true
+    wait-for-success:
+        description: "Should job wait for deployment to succeed"
+        required: false
+runs:
+    using: "node20"
+    main: "dist/main.mjs"
