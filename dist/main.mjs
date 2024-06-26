@@ -26058,7 +26058,7 @@ const CORE = /*@__PURE__*/getDefaultExportFromCjs(coreExports);
 
 const RENDER_SERVICE_ID = CORE.getInput("render-service-id") || process.env.RENDER_SERVICE_ID;
 const RENDER_API_KEY = CORE.getInput("render-api-key") || process.env.RENDER_API_KEY;
-CORE.getInput("wait-for-success") || process.env.WAIT_FOR_SUCCESS || true;
+const WAIT_FOR_SUCCESS = CORE.getInput("wait-for-success") || process.env.WAIT_FOR_SUCCESS || true;
 let ERROR = false;
 if (RENDER_SERVICE_ID === void 0) {
   CORE.setFailed("'render-service-id' is not defined");
@@ -26071,3 +26071,54 @@ if (RENDER_API_KEY === void 0) {
 if (!ERROR) {
   CORE.info("Finished successfully");
 }
+async function checkRenderDeployStatus(deployId) {
+  const RESPONSE = await fetch(`https://api.render.com/v1/services/${RENDER_SERVICE_ID}/deploys/${deployId}`, {
+    headers: { Authorization: `Bearer ${RENDER_API_KEY}` }
+  });
+  if (RESPONSE.ok) {
+    const DATA = await RESPONSE.json();
+    return DATA.status;
+  } else {
+    throw Error("Could not retrieve Render deploy status.");
+  }
+}
+async function waitForSuccess(data) {
+  let previousStatus = "";
+  while (true) {
+    await new Promise((resolve) => {
+      setTimeout(resolve, 1e4);
+    });
+    const STATUS = await checkRenderDeployStatus(data.id);
+    if (STATUS !== previousStatus) {
+      CORE.info(`Deploy status: ${STATUS}`);
+      previousStatus = STATUS;
+    }
+    if (STATUS.endsWith("failed") || STATUS === "canceled" || STATUS === "deactivated") {
+      CORE.setFailed(`Deploy status: ${STATUS}`);
+      return;
+    }
+    if (STATUS === "live") {
+      CORE.info(`Deploy finished successfully`);
+      return;
+    }
+  }
+}
+async function runDeploy() {
+  const RESPONSE = await fetch(`https://api.render.com/v1/services/${RENDER_SERVICE_ID}/deploys`, {
+    method: "POST",
+    headers: { Authorization: `Bearer ${RENDER_API_KEY}` }
+  });
+  const DATA = await RESPONSE.json();
+  if (RESPONSE.status === 401) {
+    CORE.setFailed("Render Deploy Action: Unauthorized. Please check your API key.");
+    return;
+  } else if (!RESPONSE.ok) {
+    CORE.setFailed(`Deploy error: ${DATA.message} (status code ${RESPONSE.status})`);
+    return;
+  }
+  CORE.info(`Deploy ${DATA.status} - Commit: ${DATA.commit.message}`);
+  if (WAIT_FOR_SUCCESS) {
+    await waitForSuccess(DATA);
+  }
+}
+runDeploy().catch((error) => CORE.setFailed(error.message));
