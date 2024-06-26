@@ -1,4 +1,4 @@
-name: "Render Deploy"
+name: "Trigger Render Deploy"
 description: "Triggers a Render service deploy"
 icon: arrow-up-circle
 color: purple
