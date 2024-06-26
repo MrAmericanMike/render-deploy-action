@@ -65,7 +65,6 @@ async function runDeploy() {
 	if (RESPONSE.status === 200) {
 		const DATA = await RESPONSE.json();
 		CORE.info(`Deploy ${DATA.status} - Commit: ${DATA.commit.message}`);
-
 		if (WAIT_FOR_SUCCESS === "true" || WAIT_FOR_SUCCESS === "1") {
 			CORE.info(`Waiting for success`);
 			await waitForSuccess(DATA);
