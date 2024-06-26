@@ -62,20 +62,40 @@ async function runDeploy() {
 		headers: { Authorization: `Bearer ${RENDER_API_KEY}` }
 	});
 
-	const DATA = await RESPONSE.json();
-	if (RESPONSE.status === 401) {
-		CORE.setFailed("Render Deploy Action: Unauthorized. Please check your API key.");
-		return;
-	} else if (!RESPONSE.ok) {
-		CORE.setFailed(`Deploy error: ${DATA.message} (status code ${RESPONSE.status})`);
-		return;
-	}
+	if (RESPONSE.status === 200) {
+		const DATA = await RESPONSE.json();
+		CORE.info(`Deploy ${DATA.status} - Commit: ${DATA.commit.message}`);
 
-	CORE.info(`Deploy ${DATA.status} - Commit: ${DATA.commit.message}`);
-
-	if (WAIT_FOR_SUCCESS === "true" || WAIT_FOR_SUCCESS === "1" || WAIT_FOR_SUCCESS === true) {
-		CORE.info(`Waiting for success`);
-		await waitForSuccess(DATA);
+		if (WAIT_FOR_SUCCESS === "true" || WAIT_FOR_SUCCESS === "1") {
+			CORE.info(`Waiting for success`);
+			await waitForSuccess(DATA);
+		}
+	} else if (RESPONSE.status === 401) {
+		CORE.setFailed("Render Deploy Action: Authorization information is missing or invalid.");
+		return;
+	} else if (RESPONSE.status === 403) {
+		CORE.setFailed("Render Deploy Action: You do not have permission for the requested resource.");
+		return;
+	} else if (RESPONSE.status === 404) {
+		CORE.setFailed("Render Deploy Action: Unable to find the requested resource.");
+		return;
+	} else if (RESPONSE.status === 406) {
+		CORE.setFailed("Render Deploy Action: Unable to generate preferred media types as specified by Accept request header.");
+		return;
+	} else if (RESPONSE.status === 410) {
+		CORE.setFailed("Render Deploy Action: The requested resource is no longer available.");
+		return;
+	} else if (RESPONSE.status === 429) {
+		CORE.setFailed("Render Deploy Action: Rate limit has been surpassed.");
+		return;
+	} else if (RESPONSE.status === 500) {
+		CORE.setFailed("Render Deploy Action: An unexpected server error has occurred.");
+		return;
+	} else if (RESPONSE.status === 503) {
+		CORE.setFailed("Render Deploy Action: Server currently unavailable.");
+		return;
+	} else {
+		CORE.setFailed(`Render Deploy Action: Something went wrong. Status: ${RESPONSE.status} - ${JSON.stringify(RESPONSE)}`);
 	}
 }
 if (!ERROR) {
