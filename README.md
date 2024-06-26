@@ -43,12 +43,16 @@ jobs:
                   wait-for-success: true
 ```
 
-If you want to use the latest version and not an specific version, use `uses: MrAmericanMike/render-deploy-action@master`:
+If you want to use the latest version and not an specific version, use:
 
-### Why this actions exists?
+`uses: MrAmericanMike/render-deploy-action@master`:
+
+### Why this action exists?
 
 Based on [Render Deploy Action](https://github.com/johnbeynon/render-deploy-action) by [John Beynon](https://github.com/johnbeynon)
+
 I made this new version as the one mentioned above was using an old version of Node and having some issues.
+
 Hopefully if more people use and test the one I made we can see if those problems are fixed and if not we can work on it.
 
 ## License
