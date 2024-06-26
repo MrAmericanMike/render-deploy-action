@@ -26068,9 +26068,6 @@ if (RENDER_API_KEY === void 0) {
   CORE.setFailed("'render-api-key' is not defined");
   ERROR = true;
 }
-if (!ERROR) {
-  CORE.info("Finished successfully");
-}
 async function checkRenderDeployStatus(deployId) {
   const RESPONSE = await fetch(`https://api.render.com/v1/services/${RENDER_SERVICE_ID}/deploys/${deployId}`, {
     headers: { Authorization: `Bearer ${RENDER_API_KEY}` }
@@ -26117,8 +26114,10 @@ async function runDeploy() {
     return;
   }
   CORE.info(`Deploy ${DATA.status} - Commit: ${DATA.commit.message}`);
-  if (WAIT_FOR_SUCCESS) {
+  if (WAIT_FOR_SUCCESS === "true" || WAIT_FOR_SUCCESS === "1" || WAIT_FOR_SUCCESS === true) {
     await waitForSuccess(DATA);
   }
 }
-runDeploy().catch((error) => CORE.setFailed(error.message));
+if (!ERROR) {
+  runDeploy().catch((error) => CORE.setFailed(error.message));
+}
