@@ -4,12 +4,18 @@ const RENDER_SERVICE_ID = CORE.getInput("render-service-id") || process.env.REND
 const RENDER_API_KEY = CORE.getInput("render-api-key") || process.env.RENDER_API_KEY;
 const WAIT_FOR_SUCCESS = CORE.getInput("wait-for-success") || process.env.WAIT_FOR_SUCCESS || true;
 
+let ERROR = false;
+
 if (RENDER_SERVICE_ID === undefined) {
-	CORE.setFailed("render-service-id is not defined");
+	CORE.setFailed("'render-service-id' is not defined");
+	ERROR = true;
 }
 
 if (RENDER_API_KEY === undefined) {
-	CORE.setFailed("render-api-key is not defined");
+	CORE.setFailed("'render-api-key' is not defined");
+	ERROR = true;
 }
 
-CORE.info("Finished successfully");
+if (!ERROR) {
+	CORE.info("Finished successfully");
+}
