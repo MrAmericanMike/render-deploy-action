@@ -7,14 +7,18 @@
 	"type": "module",
 	"scripts": {
 		"build": "unbuild",
-		"prepublishOnly": "pnpm run build",
 		"dev": "pnpm build && node -r dotenv/config dist/main.mjs"
 	},
 	"exports": {
 		".": "./dist/main.mjs"
 	},
-	"keywords": [],
-	"license": "UNLICENSED",
+	"keywords": [
+		"github",
+		"actions",
+		"render",
+		"deploy"
+	],
+	"license": "MIT",
 	"devDependencies": {
 		"@types/node": "20.14.9",
 		"dotenv": "16.4.5",
