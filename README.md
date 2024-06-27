@@ -45,7 +45,7 @@ jobs:
 
 If you want to use the latest version and not an specific version, use:
 
-`uses: MrAmericanMike/trigger-render-deploy@master`:
+`uses: MrAmericanMike/trigger-render-deploy@master`
 
 ### Why this action exists?
 
