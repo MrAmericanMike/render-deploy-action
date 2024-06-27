@@ -1,4 +1,4 @@
-# Render Deploy Action
+# Trigger Render Deploy
 
 Action that triggers a Render deploy.
 
@@ -36,7 +36,7 @@ jobs:
         steps:
             - name: Deploying to Render
               id: render_deploy
-              uses: MrAmericanMike/render-deploy-action@0.0.1
+              uses: MrAmericanMike/trigger-render-deploy@0.0.1
               with:
                   render-service-id: ${{ secrets.RENDER_SERVICE_ID }}
                   render-api-key: ${{ secrets.RENDER_API_KEY }}
@@ -45,7 +45,7 @@ jobs:
 
 If you want to use the latest version and not an specific version, use:
 
-`uses: MrAmericanMike/render-deploy-action@master`:
+`uses: MrAmericanMike/trigger-render-deploy@master`:
 
 ### Why this action exists?
 

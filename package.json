@@ -1,5 +1,5 @@
 {
-	"name": "render-deploy-action",
+	"name": "trigger-render-deploy",
 	"version": "0.0.1",
 	"description": "Deploy to Render Github Action",
 	"author": "MrAmericanMike",
